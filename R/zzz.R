@@ -1,0 +1,18 @@
+#' Function to squash R check's global variable notes. 
+#' 
+if (getRversion() >= "2.15.1") {
+  
+  # What variables are causing issues?
+  variables <- c(
+    "air_quality_station_eo_i_code", "air_pollutant", "air_pollutant_code", 
+    "observed_property", "datetime_begin", "datetime_end", "concentration",
+    "countrycode", "namespace", "air_quality_network", "air_quality_station",
+    "sampling_process", "averaging_time", "unit_of_measurement", "site", 
+    "variable", "validity", "verification", "value", "Countrycode", "country",
+    "period", "sampling_point", "sampling_point_process", "unit", "date_end"
+  )
+  
+  # Squash the note
+  utils::globalVariables(variables)
+  
+}

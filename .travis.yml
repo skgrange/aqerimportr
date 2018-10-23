@@ -1,0 +1,16 @@
+language: r
+sudo: required
+cache: packages
+
+env:
+  global:
+    - _R_CHECK_FORCE_SUGGESTS_=FALSE
+
+r_packages:
+  - devtools
+
+# Install development packages
+r_github_packages:
+  - skgrange/threadr
+  - skgrange/databaser
+
