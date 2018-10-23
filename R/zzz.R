@@ -9,7 +9,10 @@ if (getRversion() >= "2.15.1") {
     "countrycode", "namespace", "air_quality_network", "air_quality_station",
     "sampling_process", "averaging_time", "unit_of_measurement", "site", 
     "variable", "validity", "verification", "value", "Countrycode", "country",
-    "period", "sampling_point", "sampling_point_process", "unit", "date_end"
+    "period", "sampling_point", "sampling_point_process", "unit", "date_end",
+    "AirPollutantCode", "AirPollutant", "AirQualityStation", 
+    "AirQualityStationNatCode", "AirQualityStationEoICode", "AirQualityStationArea",
+    "AirQualityStationType", "Longitude", "Latitude", "Altitude"
   )
   
   # Squash the note

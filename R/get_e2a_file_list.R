@@ -47,7 +47,8 @@ get_e2a_file_list <- function(country = "", pollutant = "", start = NA, end = NA
   if (verbose) message(str_date_formatted(), ": ", query_string, "...")
   
   # Get file list
-  file_list <- readLines(query_string, warn = FALSE)
+  file_list <- purrr::map(query_string, readLines, warn = FALSE) %>% 
+    purrr::flatten_chr()
   
   return(file_list)
   
