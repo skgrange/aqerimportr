@@ -1,4 +1,4 @@
-# **systemr**
+# **aqerimportr**
 
 [![Build Status](https://travis-ci.org/skgrange/aqerimportr.svg?branch=master)](https://travis-ci.org/skgrange/aqerimportr)
 
