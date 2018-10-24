@@ -9,8 +9,4 @@ env:
 r_packages:
   - devtools
 
-# Install development packages
-r_github_packages:
-  - skgrange/threadr
-  - skgrange/databaser
 
