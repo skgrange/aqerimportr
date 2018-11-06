@@ -2,6 +2,8 @@
 #' 
 #' @param url A vector of URLs from \code{\link{aqer_file_list}}.
 #' 
+#' @param encoding Encoding of \code{url}. 
+#' 
 #' @param as_smonitor Should the return be formatted for use within the 
 #' \code{smonitor} framework? 
 #' 
@@ -20,57 +22,17 @@
 #' data_aqer <- aqer_data(url)
 #' 
 #' @export
-aqer_data <- function(url, as_smonitor = FALSE, verbose = FALSE) {
+aqer_data <- function(url, encoding = "UCS-2LE", as_smonitor = FALSE, 
+                      verbose = FALSE) {
  
+  # Use non-vectorised function
   purrr::map_dfr(
     url, 
-    aqer_data_read_csv, 
+    aqer_read_csv_worker, 
+    encoding = encoding,
     as_smonitor = as_smonitor, 
     verbose = verbose
   ) 
-  
-}
-
-
-aqer_data_read_csv <- function(file, encoding = "UCS-2LE", as_smonitor = FALSE,
-                         verbose = FALSE) {
-  
-  # The message
-  if (verbose) {
-    
-    cat(
-      "\r", 
-      crayon::green(str_date_formatted()), 
-      ": ", 
-      crayon::green(basename(file)), 
-      sep = ""
-    )
-    
-  }
-  
-  # Static data types
-  col_types <- c(
-    "character", "character", "character", "character", "character", 
-    "character", "character","character","character","character","character",
-    "numeric", "character", "character", "character", "integer", "integer"
-  )
-  
-  # Use base reader because of encoding issues when using readr
-  df <- read.csv(
-    file, 
-    fileEncoding = encoding, 
-    stringsAsFactors = FALSE,
-    colClasses = col_types
-  ) %>% 
-    as_tibble()
-  
-  # Clean names
-  names(df) <- str_to_underscore(names(df))
-  
-  # Clean table
-  if (as_smonitor) df <- aqer_data_clean(df)
-  
-  return(df)
   
 }
 
@@ -133,21 +95,5 @@ aqer_data_clean <- function(df) {
            validity,
            verification, 
            value)
-  
-}
-
-
-str_to_underscore <- function(x) {
-  
-  x <- gsub("([A-Za-z])([A-Z])([a-z])", "\\1_\\2\\3", x)
-  x <- gsub(".", "_", x, fixed = TRUE)
-  x <- gsub(":", "_", x, fixed = TRUE)
-  x <- gsub("\\$", "_", x)
-  x <- gsub(" ", "_", x)
-  x <- gsub("__", "_", x)
-  x <- gsub("([a-z])([A-Z])", "\\1_\\2", x)
-  x <- tolower(x)
-  x <- stringr::str_trim(x)
-  return(x)
   
 }

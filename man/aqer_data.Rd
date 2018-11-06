@@ -4,10 +4,13 @@
 \alias{aqer_data}
 \title{Function to import Air Quality e-Reporting (AQER) observational data.}
 \usage{
-aqer_data(url, as_smonitor = FALSE, verbose = FALSE)
+aqer_data(url, encoding = "UCS-2LE", as_smonitor = FALSE,
+  verbose = FALSE)
 }
 \arguments{
 \item{url}{A vector of URLs from \code{\link{aqer_file_list}}.}
+
+\item{encoding}{Encoding of \code{url}.}
 
 \item{as_smonitor}{Should the return be formatted for use within the 
 \code{smonitor} framework?}
