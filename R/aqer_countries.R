@@ -7,12 +7,12 @@
 #' @examples 
 #' 
 #' # Get countries
-#' data_countries <- get_e2a_countries()
+#' data_countries <- aqer_countries()
 #'
 #' @export
-get_e2a_countries <- function() {
+aqer_countries <- function() {
   
-  get_e2a_metadata() %>% 
+  aqer_metadata() %>% 
     select(country = Countrycode) %>% 
     distinct(country) %>% 
     left_join(read_country_names(), by = "country")

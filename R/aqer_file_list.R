@@ -20,22 +20,22 @@
 #' @examples 
 #' 
 #' # Get all swiss files
-#' get_e2a_file_list(country = "ch")
+#' aqer_file_list(country = "ch")
 #' 
 #' # Get all uk files for 2018
-#' get_e2a_file_list(country = "gb", start = 2018, end = 2018)
+#' aqer_file_list(country = "gb", start = 2018, end = 2018)
 #'
 #'
 #' @export
-get_e2a_file_list <- function(country = "", pollutant = "", start = NA, end = NA, 
-                              station = "", verbose = FALSE) {
+aqer_file_list <- function(country = "", pollutant = "", start = NA, end = NA, 
+                           station = "", verbose = FALSE) {
   
   date_system <- lubridate::now()
   start <- ifelse(is.na(start), lubridate::year(date_system), start)
   end <- ifelse(is.na(end), lubridate::year(date_system), end)
   
   # Create string
-  query_string <- build_e2a_file_query(
+  query_string <- aqer_file_query(
     country = stringr::str_to_upper(country), 
     pollutant = pollutant, 
     start = start, 
@@ -55,7 +55,7 @@ get_e2a_file_list <- function(country = "", pollutant = "", start = NA, end = NA
 }
 
 
-build_e2a_file_query <- function(country, pollutant, start, end, station) {
+aqer_file_query <- function(country, pollutant, start, end, station) {
   
   stringr::str_c(
     "http://fme.discomap.eea.europa.eu/fmedatastreaming/AirQualityDownload/AQData_Extract.fmw?CountryCode=", 

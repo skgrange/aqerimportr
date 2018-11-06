@@ -10,12 +10,12 @@
 #' @examples 
 #' 
 #' # Get countries
-#' data_sites <- get_e2a_sites()
+#' data_sites <- aqer_sites()
 #'
 #' @export
-get_e2a_sites <- function(as_smonitor = FALSE) {
+aqer_sites <- function(as_smonitor = FALSE) {
   
-  df <- get_e2a_metadata() %>% 
+  df <- aqer_metadata() %>% 
     distinct(Countrycode,
              AirQualityStation,
              AirQualityStationNatCode,
@@ -26,6 +26,7 @@ get_e2a_sites <- function(as_smonitor = FALSE) {
              Latitude,
              Altitude)
   
+  # Some formatting
   if (as_smonitor) {
     
     names(df) <- str_to_underscore(names(df))

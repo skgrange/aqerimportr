@@ -12,10 +12,10 @@
 #' @examples
 #' 
 #' # Load metadata
-#' data_metadata <- get_e2a_metadata()
+#' data_metadata <- aqer_metadata()
 #'
 #' @export
-get_e2a_metadata <- function(file = NA, as_smonitor = FALSE) {
+aqer_metadata <- function(file = NA, as_smonitor = FALSE) {
   
   # The default
   if (is.na(file[1]))

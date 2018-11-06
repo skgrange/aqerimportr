@@ -6,13 +6,13 @@
 #' 
 #' @examples 
 #' 
-#' # Get countries
-#' data_pollutants <- get_e2a_pollutants()
+#' # Get pollutants
+#' data_pollutants <- aqer_pollutants()
 #'
 #' @export
-get_e2a_pollutants <- function() {
+aqer_pollutants <- function() {
   
-  get_e2a_metadata() %>% 
+  aqer_metadata() %>% 
     mutate(observed_property = basename(AirPollutantCode)) %>% 
     select(observed_property,
            variable = AirPollutant) %>% 

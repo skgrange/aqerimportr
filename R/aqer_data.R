@@ -1,6 +1,6 @@
 #' Function to import Air Quality e-Reporting (AQER) observational data.  
 #' 
-#' @param url A vector of URLs from \code{\link{get_e2a_file_list}}.
+#' @param url A vector of URLs from \code{\link{aqer_file_list}}.
 #' 
 #' @param as_smonitor Should the return be formatted for use within the 
 #' \code{smonitor} framework? 
@@ -11,20 +11,28 @@
 #' 
 #' @return Tibble. 
 #' 
-#' @seealso \code{\link{get_e2a_file_list}}
+#' @seealso \code{\link{aqer_file_list}}
 #' 
 #' @examples
 #' 
 #' # Example url
 #' url <- "https://ereporting.blob.core.windows.net/downloadservice/GI_9_22755_2017_timeseries.csv"
-#' data_aqer <- get_e2a_data(url)
+#' data_aqer <- aqer_data(url)
 #' 
 #' @export
-get_e2a_data <- function(url, as_smonitor = FALSE, verbose = FALSE)
-  purrr::map_dfr(url, read_csv_e1a, as_smonitor = as_smonitor, verbose = verbose)
+aqer_data <- function(url, as_smonitor = FALSE, verbose = FALSE) {
+ 
+  purrr::map_dfr(
+    url, 
+    aqer_data_read_csv, 
+    as_smonitor = as_smonitor, 
+    verbose = verbose
+  ) 
+  
+}
 
 
-read_csv_e1a <- function(file, encoding = "UCS-2LE", as_smonitor = FALSE,
+aqer_data_read_csv <- function(file, encoding = "UCS-2LE", as_smonitor = FALSE,
                          verbose = FALSE) {
   
   # The message
@@ -60,7 +68,7 @@ read_csv_e1a <- function(file, encoding = "UCS-2LE", as_smonitor = FALSE,
   names(df) <- str_to_underscore(names(df))
   
   # Clean table
-  if (as_smonitor) df <- clean_e2a_data(df)
+  if (as_smonitor) df <- aqer_data_clean(df)
   
   return(df)
   
@@ -70,25 +78,25 @@ read_csv_e1a <- function(file, encoding = "UCS-2LE", as_smonitor = FALSE,
 #' Function to format Air Quality e-Reporting (AQER) observational data for easy
 #' use in the \strong{smonitor} framework. 
 #' 
-#' @param df Data frame from \code{\link{get_e2a_data}}
+#' @param df Data frame from \code{\link{aqer_data}}
 #' 
 #' @author Stuart K. Grange
 #' 
 #' @return Tibble. 
 #' 
-#' @seealso \code{\link{get_e2a_data}}
+#' @seealso \code{\link{aqer_data}}
 #' 
 #' @examples
 #' 
 #' # Example url
 #' url <- "https://ereporting.blob.core.windows.net/downloadservice/GI_9_22755_2017_timeseries.csv"
-#' data_aqer <- get_e2a_data(url)
+#' data_aqer <- aqer_data(url)
 #' 
 #' # Clean data
-#' data_aqer_clean <- clean_e2a_data(data_aqer)
+#' data_aqer_clean <- aqer_data_clean(data_aqer)
 #' 
 #' @export
-clean_e2a_data <- function(df) {
+aqer_data_clean <- function(df) {
   
   df %>% 
     mutate(site = stringr::str_to_lower(air_quality_station_eo_i_code),
