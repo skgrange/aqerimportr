@@ -5,8 +5,8 @@
 \title{Function to get remote file lists containing Air Quality e-Reporting (AQER)
 observational data.}
 \usage{
-aqer_file_list(country = "", pollutant = "", start = NA, end = NA,
-  station = "", verbose = FALSE)
+aqer_file_list(country = "", pollutant = "", start = 2013,
+  end = NA, station = "", source = "all", verbose = FALSE)
 }
 \arguments{
 \item{country}{Country code to filter file list to.}
@@ -18,6 +18,10 @@ aqer_file_list(country = "", pollutant = "", start = NA, end = NA,
 \item{end}{End year to filter file list to.}
 
 \item{station}{Station code to filter file list to.}
+
+\item{source}{What data source should be used? Can be either \code{"all"},
+\code{"e1a"} for validated and reported data, or \code{"e2a"} for near real 
+time data which are not validated data.}
 
 \item{verbose}{Should the function give messages?}
 }
@@ -32,6 +36,9 @@ observational data.
 
 # Get all swiss files
 aqer_file_list(country = "ch")
+
+# Get all validated/reported for Switzerland
+aqer_file_list(country = "ch", source = "e1a")
 
 # Get all uk files for 2018
 aqer_file_list(country = "gb", start = 2018, end = 2018)

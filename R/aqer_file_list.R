@@ -11,6 +11,10 @@
 #' 
 #' @param station Station code to filter file list to. 
 #' 
+#' @param source What data source should be used? Can be either \code{"all"},
+#' \code{"e1a"} for validated and reported data, or \code{"e2a"} for near real 
+#' time data which are not validated data. 
+#' 
 #' @param verbose Should the function give messages? 
 #' 
 #' @author Stuart K. Grange
@@ -22,17 +26,27 @@
 #' # Get all swiss files
 #' aqer_file_list(country = "ch")
 #' 
+#' # Get all validated/reported for Switzerland
+#' aqer_file_list(country = "ch", source = "e1a")
+#' 
 #' # Get all uk files for 2018
 #' aqer_file_list(country = "gb", start = 2018, end = 2018)
 #'
 #'
 #' @export
-aqer_file_list <- function(country = "", pollutant = "", start = NA, end = NA, 
-                           station = "", verbose = FALSE) {
+aqer_file_list <- function(country = "", pollutant = "", start = 2013, end = NA, 
+                           station = "", source = "all", verbose = FALSE) {
   
+  # Catch NA inputs
   date_system <- lubridate::now()
-  start <- ifelse(is.na(start), lubridate::year(date_system), start)
-  end <- ifelse(is.na(end), lubridate::year(date_system), end)
+  start <- if_else(is.na(start), lubridate::year(date_system), as.numeric(start))
+  end <- if_else(is.na(end), lubridate::year(date_system), as.numeric(end))
+  
+  # Check source input
+  source <- stringr::str_to_lower(source)
+  
+  if (!source %in% c("all", "e1a", "e2a"))
+    stop("`source` must be one of `all`, `e1a`, or `e2a`...", call. = FALSE)
   
   # Create string
   query_string <- aqer_file_query(
@@ -40,11 +54,12 @@ aqer_file_list <- function(country = "", pollutant = "", start = NA, end = NA,
     pollutant = pollutant, 
     start = start, 
     end = end, 
-    station = station
+    station = station,
+    source = source
   )
   
   # Message
-  if (verbose) message(str_date_formatted(), ": ", query_string, "...")
+  if (verbose) message(date_message(), query_string, "...")
   
   # Get file list
   file_list <- purrr::map(query_string, readLines, warn = FALSE) %>% 
@@ -55,8 +70,8 @@ aqer_file_list <- function(country = "", pollutant = "", start = NA, end = NA,
 }
 
 
-aqer_file_query <- function(country, pollutant, start, end, station) {
-  
+aqer_file_query <- function(country, pollutant, start, end, station, source) {
+
   stringr::str_c(
     "http://fme.discomap.eea.europa.eu/fmedatastreaming/AirQualityDownload/AQData_Extract.fmw?CountryCode=", 
     country,
@@ -68,7 +83,9 @@ aqer_file_query <- function(country, pollutant, start, end, station) {
     end, 
     "&Station=",
     station,
-    "&Samplingpoint=&Source=All&Output=TEXT&UpdateDate="
+    "&Samplingpoint=&Source=",
+    source, 
+    "&Output=TEXT&UpdateDate="
   )
   
 }
@@ -93,3 +110,6 @@ str_date_formatted <- function(date = NA, time_zone = TRUE,
   return(x)
   
 }
+
+
+date_message <- function() stringr::str_c(str_date_formatted(), ": ")

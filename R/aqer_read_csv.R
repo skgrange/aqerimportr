@@ -37,8 +37,7 @@ aqer_read_csv_worker <- function(file, encoding, as_smonitor, verbose) {
     
     cat(
       "\r", 
-      crayon::green(str_date_formatted()), 
-      ": ", 
+      crayon::green(date_message()), 
       crayon::green(basename(file)), 
       sep = ""
     )
