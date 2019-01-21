@@ -63,11 +63,13 @@ aqer_data_clean <- function(df) {
   df %>% 
     mutate(site = stringr::str_to_lower(air_quality_station_eo_i_code),
            variable = stringr::str_to_lower(air_pollutant),
+           variable = stringr::str_replace_all(variable, " ", "_"), 
+           variable = if_else(variable == "nox_as_no2", "nox", variable),
            observed_property = basename(air_pollutant_code),
            observed_property = as.integer(observed_property),
            datetime_begin = lubridate::ymd_hms(datetime_begin, tz = "UTC"),
            datetime_end = lubridate::ymd_hms(datetime_end, tz = "UTC"),
-           concentration = ifelse(concentration == -9999, NA, concentration)) %>% 
+           concentration = if_else(concentration == -9999, NA_real_, concentration)) %>% 
     select(-countrycode,
            -namespace,
            -air_quality_network,

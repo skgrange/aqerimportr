@@ -20,7 +20,7 @@ Function to import Air Quality e-Reporting (AQER) metadata.
 }
 \examples{
 
-# Load metadata
+# Load aqer metadata
 data_metadata <- aqer_metadata()
 
 }
