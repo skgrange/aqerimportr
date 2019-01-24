@@ -40,7 +40,7 @@ aqer_data <- function(url, encoding = "UCS-2LE", as_smonitor = FALSE,
 #' Function to format Air Quality e-Reporting (AQER) observational data for easy
 #' use in the \strong{smonitor} framework. 
 #' 
-#' @param df Data frame from \code{\link{aqer_data}}
+#' @param df Data frame from \code{\link{aqer_data}}.
 #' 
 #' @author Stuart K. Grange
 #' 
@@ -77,7 +77,8 @@ aqer_data_clean <- function(df) {
            -air_pollutant,
            -air_pollutant_code,
            -air_quality_station_eo_i_code) %>% 
-    rename(sampling_point_process = sampling_process,
+    rename(feature_of_interest = sample,
+           procedure = sampling_process,
            period = averaging_time,
            date = datetime_begin,
            date_end = datetime_end,
@@ -88,9 +89,9 @@ aqer_data_clean <- function(df) {
            observed_property,
            period,
            site,
-           sample,
+           feature_of_interest,
            sampling_point, 
-           sampling_point_process,
+           procedure,
            unit, 
            date,
            date_end, 

@@ -14,7 +14,8 @@ if (getRversion() >= "2.15.1") {
     "AirQualityStationNatCode", "AirQualityStationEoICode", "AirQualityStationArea",
     "AirQualityStationType", "Longitude", "Latitude", "Altitude", "altitude",
     "air_quality_station_type", "air_quality_station_area", 
-    "air_quality_station_nat_code", "projection"
+    "air_quality_station_nat_code", "projection", "feature_of_interest", 
+    "procedure"
   )
   
   # Squash the note

@@ -8,7 +8,7 @@ use in the \strong{smonitor} framework.}
 aqer_data_clean(df)
 }
 \arguments{
-\item{df}{Data frame from \code{\link{aqer_data}}}
+\item{df}{Data frame from \code{\link{aqer_data}}.}
 }
 \value{
 Tibble.
