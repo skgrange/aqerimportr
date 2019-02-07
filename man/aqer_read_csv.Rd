@@ -2,10 +2,13 @@
 % Please edit documentation in R/aqer_read_csv.R
 \name{aqer_read_csv}
 \alias{aqer_read_csv}
-\title{Function to read an Air Quality e-Reporting (AQER) observational data file.}
+\alias{aqer_read_csv_worker}
+\title{Functions to read Air Quality e-Reporting (AQER) observational data files.}
 \usage{
 aqer_read_csv(file, encoding = "UCS-2LE", as_smonitor = FALSE,
   verbose = FALSE)
+
+aqer_read_csv_worker(file, encoding, as_smonitor, verbose)
 }
 \arguments{
 \item{file}{Vector of file names to read.}
@@ -21,10 +24,13 @@ aqer_read_csv(file, encoding = "UCS-2LE", as_smonitor = FALSE,
 Tibble.
 }
 \description{
-Function to read an Air Quality e-Reporting (AQER) observational data file.
+\code{aqer_read_csv_worker} is the unvectorised worker function which can be
+used other situations other than just reading many files, such as exporting 
+data in parallel.
 }
 \note{
-To-do: Enhance to use \strong{readr}.
+To-do: Enhance to use \strong{readr} but need to address encoding 
+issues first.
 }
 \author{
 Stuart K. Grange

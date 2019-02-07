@@ -1,6 +1,10 @@
-#' Function to read an Air Quality e-Reporting (AQER) observational data file.
+#' Functions to read Air Quality e-Reporting (AQER) observational data files.
 #' 
-#' @param file Vector of file names to read. 
+#' \code{aqer_read_csv_worker} is the unvectorised worker function which can be
+#' used other situations other than just reading many files, such as exporting 
+#' data in parallel. 
+#' 
+#' @param file Vector of file names to read.
 #' 
 #' @param encoding Encoding of \code{file}. 
 #' 
@@ -13,7 +17,8 @@
 #' 
 #' @return Tibble. 
 #' 
-#' @note To-do: Enhance to use \strong{readr}. 
+#' @note To-do: Enhance to use \strong{readr} but need to address encoding 
+#' issues first. 
 #' 
 #' @export
 aqer_read_csv <- function(file, encoding = "UCS-2LE", as_smonitor = FALSE,
@@ -30,6 +35,8 @@ aqer_read_csv <- function(file, encoding = "UCS-2LE", as_smonitor = FALSE,
 }
 
 
+#' @rdname aqer_read_csv
+#' @export
 aqer_read_csv_worker <- function(file, encoding, as_smonitor, verbose) {
   
   # The message
