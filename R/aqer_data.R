@@ -60,6 +60,9 @@ aqer_data <- function(url, encoding = "UCS-2LE", as_smonitor = FALSE,
 #' @export
 aqer_data_clean <- function(df) {
   
+  # Correct names if needed
+  if (names(df)[1] == "Countrycode") names(df) <- str_to_underscore(names(df))
+  
   # Check for malformed observations
   vector_to_test <- c(
     df$countrycode, 

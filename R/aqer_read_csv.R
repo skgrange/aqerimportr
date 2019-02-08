@@ -40,16 +40,7 @@ aqer_read_csv <- function(file, encoding = "UCS-2LE", as_smonitor = FALSE,
 aqer_read_csv_worker <- function(file, encoding, as_smonitor, verbose) {
   
   # The message
-  if (verbose) {
-    
-    cat(
-      "\r", 
-      crayon::green(date_message()), 
-      crayon::green(basename(file)), 
-      sep = ""
-    )
-    
-  }
+  if (verbose) message(date_message(), basename(file))
   
   # Static data types
   col_types <- c(
@@ -66,11 +57,16 @@ aqer_read_csv_worker <- function(file, encoding, as_smonitor, verbose) {
   ) %>% 
     as_tibble()
   
-  # Clean names
-  names(df) <- str_to_underscore(names(df))
-  
-  # Clean table
-  if (as_smonitor) df <- aqer_data_clean(df)
+  # Clean table for smonitor
+  if (as_smonitor) {
+    
+    # Clean names
+    names(df) <- str_to_underscore(names(df))
+    
+    # Clean table
+    df <- aqer_data_clean(df)
+    
+  }
   
   return(df)
   
@@ -86,7 +82,7 @@ str_to_underscore <- function(x) {
   x <- gsub(" ", "_", x)
   x <- gsub("__", "_", x)
   x <- gsub("([a-z])([A-Z])", "\\1_\\2", x)
-  x <- tolower(x)
+  x <- stringr::str_to_lower(x)
   x <- stringr::str_trim(x)
   return(x)
   

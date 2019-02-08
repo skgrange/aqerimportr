@@ -70,9 +70,13 @@ aqer_metadata_clean_for_smonitor <- function(df) {
            -air_pollutant_code,
            -projection,
            -air_quality_station_area) %>% 
-    mutate_if(is.double, ~if_else(. %in% aqer_metadata_na_strings(), NA_real_, .)) %>% 
-    mutate_if(is.integer, ~if_else(. %in% aqer_metadata_na_strings(), NA_integer_, .))
-    
+    dplyr::mutate_if(
+      is.double, ~if_else(. %in% aqer_metadata_na_strings(), NA_real_, .)
+    ) %>% 
+    dplyr::mutate_if(
+      is.integer, ~if_else(. %in% aqer_metadata_na_strings(), NA_integer_, .)
+    )
+  
 }
 
 aqer_metadata_na_strings <- function() {
