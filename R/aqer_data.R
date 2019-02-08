@@ -60,8 +60,36 @@ aqer_data <- function(url, encoding = "UCS-2LE", as_smonitor = FALSE,
 #' @export
 aqer_data_clean <- function(df) {
   
-  df %>% 
+  # Check for malformed observations
+  vector_to_test <- c(
+    df$countrycode, 
+    df$countrycode, 
+    df$air_pollutant_code, 
+    df$unit_of_measurement,
+    df$datetime_begin
+  )
+  
+  if (any(vector_to_test == "")) {
+    
+    # Drop observations
+    df <- df %>% 
+      filter(countrycode != "", 
+             air_quality_station_eo_i_code != "",
+             air_pollutant_code != "",
+             unit_of_measurement != "",
+             datetime_begin != "")
+    
+    # Raise a warning
+    warning(
+      "Malformed observations detected, observations removed...",
+      call. = FALSE
+    )
+    
+  }
+  
+  df <- df %>% 
     mutate(site = stringr::str_to_lower(air_quality_station_eo_i_code),
+           site = stringr::str_remove(site, "^sta-"),
            variable = stringr::str_to_lower(air_pollutant),
            variable = stringr::str_replace_all(variable, " ", "_"), 
            variable = if_else(variable == "nox_as_no2", "nox", variable),
@@ -97,6 +125,9 @@ aqer_data_clean <- function(df) {
            date_end, 
            validity,
            verification, 
-           value)
+           value) %>% 
+    dplyr::mutate_if(is.character, ~if_else(. == "", NA_character_, .))
+  
+  return(df)
   
 }
