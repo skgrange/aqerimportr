@@ -17,13 +17,16 @@ This development should result in a CRAN version soon.
 
 ## Usage
 
-Most of **aqerimportr**'s functions use a `aqer_*` suffix. The more useful functions are: `aqer_metadata`, `aqer_read_csv`, `aqer_data_clean`, and `aqer_file_list`. 
+Most of **aqerimportr**'s functions use a `aqer_*` prefix. The more useful functions are: `aqer_metadata`, `aqer_read_csv`, `aqer_data_clean`, and `aqer_file_list`. 
 
 ### Importing metadata
 
 A metadata table is updated daily and contains useful information about sites and measurements and can be accessed easily: 
 
 ```
+# Load package
+library(aqerimportr)
+
 # Get dynamic metadata
 data_metadata <- aqer_metadata()
 
@@ -42,7 +45,7 @@ data_single_file <- aqer_read_csv(
 )
 ```
 
-`aqer_read_csv` will faithfully return the format of the data file and therefore dates and some other things will not be formatted. Use `aqer_data_clean` to make the table more suitable for analysis. There are a few ways to do this, but a good way is to immediately pipe the cleaning function: 
+`aqer_read_csv` will faithfully return the format of the data file and therefore dates and some other variables will not be formatted. Use `aqer_data_clean` to make the table more suitable for analysis. There are a few ways to do this, but a good way is to immediately pipe the cleaning function:
 
 ```
 # Load data from a single file and then clean a few things
@@ -72,10 +75,10 @@ data_dk_all <- aqer_read_csv(file_list_remote, verbose = TRUE)
 # Clean the observations
 data_dk_all_clean <- aqer_data_clean(data_dk_all)
 
-# Ready for some analysis
+# Ready for some analysis...
 ```
 
-So-called "near-real-time" observations are also available by using `e2a` as the data source: 
+So-called "near-real-time" observations are also available by using `e2a` as the data source too: 
 
 ```
 # Build a file list for e2a data
@@ -85,4 +88,14 @@ file_list_remote_e2a <- aqer_file_list(
   end = 2019, 
   source = "e2a"
 )
+
+# Get load all these files, beware that these data are not validated
+data_dk_near_real_time <- aqer_read_csv(file_list_remote_e2a, verbose = TRUE)
+
+# How up to date are these data? 
+data_dk_near_real_time %>% 
+  aqer_data_clean() %>% 
+  dplyr::summarise(date_max = max(date))
+  
+# Should be within a few days...
 ```

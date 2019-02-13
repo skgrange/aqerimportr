@@ -66,7 +66,6 @@ aqer_data_clean <- function(df) {
   # Check for malformed observations
   vector_to_test <- c(
     df$countrycode, 
-    df$countrycode, 
     df$air_pollutant_code, 
     df$unit_of_measurement,
     df$datetime_begin
