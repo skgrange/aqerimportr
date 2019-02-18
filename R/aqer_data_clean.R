@@ -1,58 +1,19 @@
-#' Function to import Air Quality e-Reporting (AQER) observational data.  
-#' 
-#' @param url A vector of URLs from \code{\link{aqer_file_list}}.
-#' 
-#' @param encoding Encoding of \code{url}. 
-#' 
-#' @param as_smonitor Should the return be formatted for use within the 
-#' \code{smonitor} framework? 
-#' 
-#' @param verbose Should the function give messages? 
-#' 
-#' @author Stuart K. Grange
-#' 
-#' @return Tibble. 
-#' 
-#' @seealso \code{\link{aqer_file_list}}
-#' 
-#' @examples
-#' 
-#' # Example url
-#' url <- "https://ereporting.blob.core.windows.net/downloadservice/GI_9_22755_2017_timeseries.csv"
-#' data_aqer <- aqer_data(url)
-#' 
-#' @export
-aqer_data <- function(url, encoding = "UCS-2LE", as_smonitor = FALSE, 
-                      verbose = FALSE) {
- 
-  # Use non-vectorised function
-  purrr::map_dfr(
-    url, 
-    aqer_read_csv_worker, 
-    encoding = encoding,
-    as_smonitor = as_smonitor, 
-    verbose = verbose
-  ) 
-  
-}
-
-
 #' Function to format Air Quality e-Reporting (AQER) observational data for easy
 #' use in the \strong{smonitor} framework. 
 #' 
-#' @param df Data frame from \code{\link{aqer_data}}.
+#' @param df Data frame from \code{\link{aqer_read_csv}}.
 #' 
 #' @author Stuart K. Grange
 #' 
 #' @return Tibble. 
 #' 
-#' @seealso \code{\link{aqer_data}}
+#' @seealso \code{\link{aqer_read_csv}}
 #' 
 #' @examples
 #' 
 #' # Example url
 #' url <- "https://ereporting.blob.core.windows.net/downloadservice/GI_9_22755_2017_timeseries.csv"
-#' data_aqer <- aqer_data(url)
+#' data_aqer <- aqer_read_csv(url)
 #' 
 #' # Clean data
 #' data_aqer_clean <- aqer_data_clean(data_aqer)
@@ -107,9 +68,7 @@ aqer_data_clean <- function(df) {
            -air_pollutant,
            -air_pollutant_code,
            -air_quality_station_eo_i_code) %>% 
-    rename(feature_of_interest = sample,
-           procedure = sampling_process,
-           period = averaging_time,
+    rename(period = averaging_time,
            date = datetime_begin,
            date_end = datetime_end,
            unit = unit_of_measurement,
@@ -119,9 +78,9 @@ aqer_data_clean <- function(df) {
            observed_property,
            period,
            site,
-           feature_of_interest,
+           sample,
            sampling_point, 
-           procedure,
+           sampling_process,
            unit, 
            date,
            date_end, 

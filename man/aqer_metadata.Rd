@@ -23,6 +23,9 @@ Function to import Air Quality e-Reporting (AQER) metadata.
 # Load aqer metadata
 data_metadata <- aqer_metadata()
 
+# Load aqer metadata and clean a bit
+data_metadata_clean <- aqer_metadata(as_smonitor = TRUE)
+
 }
 \author{
 Stuart K. Grange

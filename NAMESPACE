@@ -2,7 +2,6 @@
 
 export("%>%")
 export(aqer_countries)
-export(aqer_data)
 export(aqer_data_clean)
 export(aqer_file_list)
 export(aqer_metadata)

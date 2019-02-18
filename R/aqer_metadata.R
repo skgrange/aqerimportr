@@ -13,13 +13,17 @@
 #' 
 #' # Load aqer metadata
 #' data_metadata <- aqer_metadata()
+#' 
+#' # Load aqer metadata and clean a bit
+#' data_metadata_clean <- aqer_metadata(as_smonitor = TRUE)
 #'
 #' @export
 aqer_metadata <- function(file = NA, as_smonitor = FALSE) {
   
   # The default
-  if (is.na(file[1]))
+  if (is.na(file[1])) {
     file <- "https://ereporting.blob.core.windows.net/downloadservice/metadata.csv"
+  }
   
   # Get data as text
   text <- readLines(file, warn = FALSE)
@@ -79,8 +83,4 @@ aqer_metadata_clean_for_smonitor <- function(df) {
   
 }
 
-aqer_metadata_na_strings <- function() {
-  
-  c(-9999, 9999, -9900, -99)
-  
-}
+aqer_metadata_na_strings <- function() c(-9999, 9999, -9900, -99)

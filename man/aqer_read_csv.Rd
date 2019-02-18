@@ -29,8 +29,21 @@ used other situations other than just reading many files, such as exporting
 data in parallel.
 }
 \note{
-To-do: Enhance to use \strong{readr} but need to address encoding 
+To-do: Enhance to use \strong{readr}, but need to address encoding 
 issues first.
+}
+\examples{
+
+# Example url
+url <- "https://ereporting.blob.core.windows.net/downloadservice/GI_9_22755_2017_timeseries.csv"
+data_aqer <- aqer_read_csv(url)
+
+# Correct some data types
+data_aqer_clean <- aqer_read_csv(url, as_smonitor = TRUE)
+
+}
+\seealso{
+\code{\link{aqer_file_list}}
 }
 \author{
 Stuart K. Grange

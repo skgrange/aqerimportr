@@ -17,13 +17,25 @@
 #' 
 #' @return Tibble. 
 #' 
-#' @note To-do: Enhance to use \strong{readr} but need to address encoding 
+#' @note To-do: Enhance to use \strong{readr}, but need to address encoding 
 #' issues first. 
+#' 
+#' @seealso \code{\link{aqer_file_list}}
+#' 
+#' @examples
+#' 
+#' # Example url
+#' url <- "https://ereporting.blob.core.windows.net/downloadservice/GI_9_22755_2017_timeseries.csv"
+#' data_aqer <- aqer_read_csv(url)
+#' 
+#' # Correct some data types
+#' data_aqer_clean <- aqer_read_csv(url, as_smonitor = TRUE)
 #' 
 #' @export
 aqer_read_csv <- function(file, encoding = "UCS-2LE", as_smonitor = FALSE,
                           verbose = FALSE) {
   
+  # Vectorise function
   purrr::map_dfr(
     file,
     aqer_read_csv_worker,
