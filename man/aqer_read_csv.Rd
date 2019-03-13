@@ -28,10 +28,6 @@ Tibble.
 used other situations other than just reading many files, such as exporting 
 data in parallel.
 }
-\note{
-To-do: Enhance to use \strong{readr}, but need to address encoding 
-issues first.
-}
 \examples{
 
 # Example url

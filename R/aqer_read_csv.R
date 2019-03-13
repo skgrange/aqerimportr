@@ -17,9 +17,6 @@
 #' 
 #' @return Tibble. 
 #' 
-#' @note To-do: Enhance to use \strong{readr}, but need to address encoding 
-#' issues first. 
-#' 
 #' @seealso \code{\link{aqer_file_list}}
 #' 
 #' @examples
@@ -54,20 +51,11 @@ aqer_read_csv_worker <- function(file, encoding, as_smonitor, verbose) {
   # The message
   if (verbose) message(date_message(), basename(file))
   
-  # Static data types
-  col_types <- c(
-    "character", "character", "character", "character", "character", 
-    "character", "character","character","character","character","character",
-    "numeric", "character", "character", "character", "integer", "integer"
-  )
+  # Try to load data with readr first
+  df <- aqer_read_csv_worker_readr_safe(file)
   
-  # Use base reader because of encoding issues when using readr
-  df <- read.csv(
-    file, 
-    fileEncoding = encoding, 
-    colClasses = col_types
-  ) %>% 
-    as_tibble()
+  # Try with base read.table and different encoding
+  if (nrow(df) == 0) df <- aqer_read_csv_worker_base(file, encoding)
   
   # Clean table for smonitor
   if (as_smonitor) {
@@ -97,5 +85,68 @@ str_to_underscore <- function(x) {
   x <- stringr::str_to_lower(x)
   x <- stringr::str_trim(x)
   return(x)
+  
+}
+
+
+aqer_read_csv_col_types <- function() {
+  
+  readr::cols(
+    Countrycode = readr::col_character(),
+    Namespace = readr::col_character(),
+    AirQualityNetwork = readr::col_character(),
+    AirQualityStation = readr::col_character(),
+    AirQualityStationEoICode = readr::col_character(),
+    SamplingPoint = readr::col_character(),
+    SamplingProcess = readr::col_character(),
+    Sample = readr::col_character(),
+    AirPollutant = readr::col_character(),
+    AirPollutantCode = readr::col_character(),
+    AveragingTime = readr::col_character(),
+    Concentration = readr::col_double(),
+    UnitOfMeasurement = readr::col_character(),
+    DatetimeBegin = readr::col_character(),
+    DatetimeEnd = readr::col_character(),
+    Validity = readr::col_integer(),
+    Verification = readr::col_integer()
+  )
+  
+}
+
+
+aqer_read_csv_worker_readr <- function(file) {
+  
+  suppressWarnings(
+    readr::read_csv(file, col_types = aqer_read_csv_col_types())
+  )
+  
+}
+
+
+aqer_read_csv_worker_readr_safe <- purrr::possibly(
+  aqer_read_csv_worker_readr,
+  otherwise = tibble(),
+  quiet = TRUE
+)
+
+
+aqer_read_csv_worker_base <- function(file, encoding) {
+  
+  # Static data types
+  col_types <- c(
+    "character", "character", "character", "character", "character",
+    "character", "character","character","character","character","character",
+    "numeric", "character", "character", "character", "integer", "integer"
+  )
+
+  # Use base reader because of encoding issues when using readr
+  df <- read.csv(
+    file,
+    fileEncoding = encoding,
+    colClasses = col_types
+  ) %>%
+    as_tibble()
+  
+  return(df)
   
 }
