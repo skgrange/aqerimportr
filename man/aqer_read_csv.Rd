@@ -6,17 +6,22 @@
 \title{Functions to read Air Quality e-Reporting (AQER) observational data files.}
 \usage{
 aqer_read_csv(file, encoding = "UCS-2LE", as_smonitor = FALSE,
-  verbose = FALSE)
+  timeout = 30, warn = TRUE, verbose = FALSE)
 
-aqer_read_csv_worker(file, encoding, as_smonitor, verbose)
+aqer_read_csv_worker(file, encoding, as_smonitor, timeout, warn, verbose)
 }
 \arguments{
-\item{file}{Vector of file names to read.}
+\item{file}{Vector of file names to read or a character vector to be parsed.}
 
 \item{encoding}{Encoding of \code{file}.}
 
 \item{as_smonitor}{Should the return be formatted for use within the 
 \code{smonitor} framework?}
+
+\item{timeout}{When file is a URL, how many seconds should be used as a 
+timeout?}
+
+\item{warn}{Should the function raise warnings?}
 
 \item{verbose}{Should the function give messages?}
 }
