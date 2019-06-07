@@ -13,8 +13,6 @@ To install the development version:
 remotes::install_github("skgrange/aqerimportr")
 ```
 
-This development should result in a CRAN version soon. 
-
 ## Usage
 
 Most of **aqerimportr**'s functions use a `aqer_*` prefix. The more useful functions are: `aqer_metadata`, `aqer_read_csv`, `aqer_data_clean`, and `aqer_file_list`. 
