@@ -1,7 +1,7 @@
 #' Function to format Air Quality e-Reporting (AQER) observational data for easy
 #' use in the \strong{smonitor} framework. 
 #' 
-#' @param df Data frame from \code{\link{aqer_read_csv}}.
+#' @param df Tibble from \code{\link{aqer_read_csv}}.
 #' 
 #' @author Stuart K. Grange
 #' 
@@ -18,6 +18,11 @@
 #' # Clean data
 #' data_aqer_clean <- aqer_data_clean(data_aqer)
 #' 
+#' # Another example, this files has missing units and will raise a warning
+#' url <- "https://ereporting.blob.core.windows.net/downloadservice/AT_618_1437_2013_timeseries.csv"
+#' data_aqer_clean_test <- aqer_read_csv(url) %>% 
+#'   aqer_data_clean()
+#' 
 #' @export
 aqer_data_clean <- function(df) {
   
@@ -25,14 +30,22 @@ aqer_data_clean <- function(df) {
   if (names(df)[1] == "Countrycode") names(df) <- str_to_underscore(names(df))
   
   # Check for malformed observations
-  vector_to_test <- c(
-    df$countrycode, 
-    df$air_pollutant_code, 
-    df$unit_of_measurement,
-    df$datetime_begin
+  # Variables to test
+  variable_names <- c(
+    "countrycode", "air_pollutant_code", "unit_of_measurement", "datetime_begin"
   )
   
-  if (any(vector_to_test == "")) {
+  # Catch nas and push to characters
+  df <- dplyr::mutate_at(df, variable_names, stringr::str_replace_na, "")
+  
+  # Test variables
+  missing_values <- df %>% 
+    select(!!variable_names) %>% 
+    dplyr::mutate_all(~. == "") %>% 
+    as.matrix() %>% 
+    any()
+  
+  if (missing_values) {
     
     # Drop observations
     df <- df %>% 

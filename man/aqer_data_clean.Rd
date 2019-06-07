@@ -8,7 +8,7 @@ use in the \strong{smonitor} framework.}
 aqer_data_clean(df)
 }
 \arguments{
-\item{df}{Data frame from \code{\link{aqer_read_csv}}.}
+\item{df}{Tibble from \code{\link{aqer_read_csv}}.}
 }
 \value{
 Tibble.
@@ -25,6 +25,11 @@ data_aqer <- aqer_read_csv(url)
 
 # Clean data
 data_aqer_clean <- aqer_data_clean(data_aqer)
+
+# Another example, this files has missing units and will raise a warning
+url <- "https://ereporting.blob.core.windows.net/downloadservice/AT_618_1437_2013_timeseries.csv"
+data_aqer_clean_test <- aqer_read_csv(url) \%>\% 
+  aqer_data_clean()
 
 }
 \seealso{
