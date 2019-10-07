@@ -63,17 +63,22 @@ aqer_data_clean <- function(df) {
     
   }
   
+  # Clean the observations
   df <- df %>% 
-    mutate(site = stringr::str_to_lower(air_quality_station_eo_i_code),
-           site = stringr::str_remove(site, "^sta-"),
-           variable = stringr::str_to_lower(air_pollutant),
-           variable = stringr::str_replace_all(variable, " ", "_"), 
-           variable = if_else(variable == "nox_as_no2", "nox", variable),
-           observed_property = basename(air_pollutant_code),
-           observed_property = as.integer(observed_property),
-           datetime_begin = lubridate::ymd_hms(datetime_begin, tz = "UTC"),
-           datetime_end = lubridate::ymd_hms(datetime_end, tz = "UTC"),
-           concentration = if_else(concentration == -9999, NA_real_, concentration)) %>% 
+    mutate(
+      site = stringr::str_to_lower(air_quality_station_eo_i_code),
+      site = stringr::str_remove(site, "^sta-"),
+      variable = stringr::str_to_lower(air_pollutant),
+      variable = stringr::str_replace_all(variable, " ", "_"), 
+      variable = if_else(variable == "nox_as_no2", "nox", variable),
+      observed_property = basename(air_pollutant_code),
+      observed_property = as.integer(observed_property),
+      datetime_begin = lubridate::ymd_hms(datetime_begin, tz = "UTC"),
+      datetime_end = lubridate::ymd_hms(datetime_end, tz = "UTC"),
+      concentration = if_else(concentration == -9999, NA_real_, concentration),
+      unit_of_measurement = as.integer(unit_of_measurement),
+      unit_of_measurement = if_else(unit_of_measurement == -99, NA_integer_, unit_of_measurement)
+    ) %>% 
     select(-countrycode,
            -namespace,
            -air_quality_network,
