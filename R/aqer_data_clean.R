@@ -76,8 +76,7 @@ aqer_data_clean <- function(df) {
       datetime_begin = lubridate::ymd_hms(datetime_begin, tz = "UTC"),
       datetime_end = lubridate::ymd_hms(datetime_end, tz = "UTC"),
       concentration = if_else(concentration == -9999, NA_real_, concentration),
-      unit_of_measurement = as.integer(unit_of_measurement),
-      unit_of_measurement = if_else(unit_of_measurement == -99, NA_integer_, unit_of_measurement)
+      validity = if_else(validity == -99, NA_integer_, validity)
     ) %>% 
     select(-countrycode,
            -namespace,
