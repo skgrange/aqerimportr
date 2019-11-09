@@ -144,7 +144,7 @@ aqer_read_csv_col_types <- function() {
 aqer_read_csv_worker_readr <- function(file) {
   
   suppressWarnings(
-    readr::read_csv(file, col_types = aqer_read_csv_col_types())
+    readr::read_csv(file, col_types = aqer_read_csv_col_types(), progress = FALSE)
   )
   
 }
