@@ -5,8 +5,14 @@
 \alias{aqer_read_csv_worker}
 \title{Functions to read Air Quality e-Reporting (AQER) observational data files.}
 \usage{
-aqer_read_csv(file, encoding = "UCS-2LE", as_smonitor = FALSE,
-  timeout = 30, warn = TRUE, verbose = FALSE)
+aqer_read_csv(
+  file,
+  encoding = "UCS-2LE",
+  as_smonitor = FALSE,
+  timeout = 30,
+  warn = TRUE,
+  verbose = FALSE
+)
 
 aqer_read_csv_worker(file, encoding, as_smonitor, timeout, warn, verbose)
 }

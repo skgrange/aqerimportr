@@ -57,7 +57,7 @@ aqer_read_csv_worker <- function(file, encoding, as_smonitor, timeout, warn,
                                  verbose) {
   
   # The message
-  if (verbose) message(date_message(), file)
+  if (verbose) message(date_message(), "`", file, "`...")
   
   # If a url, use httr to get contents
   if (stringr::str_detect(file[1], "^http:|^https:")) {
@@ -73,8 +73,7 @@ aqer_read_csv_worker <- function(file, encoding, as_smonitor, timeout, warn,
     if (warn) {
       warning(
         date_message(), 
-        basename(file), 
-        " has an odd encoding...",
+        " this file has an odd encoding...",
         call. = FALSE,
         immediate. = TRUE
       )

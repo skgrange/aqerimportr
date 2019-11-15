@@ -5,8 +5,15 @@
 \title{Function to get remote file lists containing Air Quality e-Reporting (AQER)
 observational data.}
 \usage{
-aqer_file_list(country = "", pollutant = "", start = 2013,
-  end = NA, station = "", source = "all", verbose = FALSE)
+aqer_file_list(
+  country = "",
+  pollutant = "",
+  start = 2013,
+  end = NA,
+  station = "",
+  source = "all",
+  verbose = FALSE
+)
 }
 \arguments{
 \item{country}{Country code to filter file list to.}
