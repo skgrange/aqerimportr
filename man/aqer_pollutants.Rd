@@ -4,7 +4,10 @@
 \alias{aqer_pollutants}
 \title{Function to get Air Quality e-Reporting (AQER) pollutants.}
 \usage{
-aqer_pollutants()
+aqer_pollutants(file = NA)
+}
+\arguments{
+\item{file}{File name or URL of metadata file. Do not use for "live" version.}
 }
 \value{
 Tibble.
@@ -17,6 +20,9 @@ Function to get Air Quality e-Reporting (AQER) pollutants.
 # Get pollutants
 data_pollutants <- aqer_pollutants()
 
+}
+\seealso{
+\code{\link{aqer_metadata}}
 }
 \author{
 Stuart K. Grange

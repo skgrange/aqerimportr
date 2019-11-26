@@ -27,6 +27,9 @@ data_metadata <- aqer_metadata()
 data_metadata_clean <- aqer_metadata(as_smonitor = TRUE)
 
 }
+\seealso{
+\href{http://discomap.eea.europa.eu/map/fme/AirQualityExport.htm}{AQER download portal}
+}
 \author{
 Stuart K. Grange
 }

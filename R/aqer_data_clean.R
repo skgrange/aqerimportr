@@ -55,24 +55,48 @@ aqer_data_clean <- function(df) {
              unit_of_measurement != "",
              datetime_begin != "")
     
-    # Raise a warning
+  }
+  
+  # Also check for incorrect air_pollutant_code/observed properties, causes
+  # a lot of issues if incorrect
+  df <- df %>% 
+    mutate(observed_property = fs::path_file(air_pollutant_code),
+           observed_property = suppressWarnings(as.integer(observed_property)))
+  
+  # Check for missing-ness
+  missing_observed_properties <- anyNA(df$observed_property)
+  
+  # Drop observations
+  if (missing_observed_properties) {
+    df <- filter(df, !is.na(observed_property))
+  }
+  
+  # Raise a warning for missing observations
+  if (any(missing_values, anyNA(df$observed_property))) {
     warning(
-      "Malformed observations detected, observations removed...",
-      call. = FALSE
+      "Malformed observations detected, observations have been removed...",
+      call. = FALSE,
+      immediate. = TRUE
     )
-    
   }
   
   # Clean the observations
-  df <- df %>% 
+  df <- aqer_data_table_formatter(df)
+  
+  return(df)
+  
+}
+
+
+aqer_data_table_formatter <- function(df) {
+  
+  df %>% 
     mutate(
       site = stringr::str_to_lower(air_quality_station_eo_i_code),
       site = stringr::str_remove(site, "^sta-"),
       variable = stringr::str_to_lower(air_pollutant),
       variable = stringr::str_replace_all(variable, " ", "_"), 
       variable = if_else(variable == "nox_as_no2", "nox", variable),
-      observed_property = basename(air_pollutant_code),
-      observed_property = as.integer(observed_property),
       datetime_begin = lubridate::ymd_hms(datetime_begin, tz = "UTC"),
       datetime_end = lubridate::ymd_hms(datetime_end, tz = "UTC"),
       concentration = if_else(concentration == -9999, NA_real_, concentration),
@@ -105,7 +129,5 @@ aqer_data_clean <- function(df) {
            verification, 
            value) %>% 
     dplyr::mutate_if(is.character, ~if_else(. == "", NA_character_, .))
-  
-  return(df)
   
 }
