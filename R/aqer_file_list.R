@@ -45,8 +45,9 @@ aqer_file_list <- function(country = "", pollutant = "", start = 2013, end = NA,
   # Check source input
   source <- stringr::str_to_lower(source)
   
-  if (!source %in% c("all", "e1a", "e2a"))
+  if (!source %in% c("all", "e1a", "e2a")) {
     stop("`source` must be one of `all`, `e1a`, or `e2a`...", call. = FALSE)
+  }
   
   # Create string
   query_string <- aqer_file_query(
@@ -59,7 +60,7 @@ aqer_file_list <- function(country = "", pollutant = "", start = 2013, end = NA,
   )
   
   # Message
-  if (verbose) message(date_message(), query_string, "...")
+  if (verbose) message(date_message(), "`", query_string, "`...")
   
   # Get file list
   file_list <- purrr::map(query_string, readLines, warn = FALSE) %>% 
