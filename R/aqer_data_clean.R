@@ -92,6 +92,14 @@ aqer_data_table_formatter <- function(df) {
   
   df %>% 
     mutate(
+      # 2020 files only contain NAs in air_quality_station_eo_i_code
+      air_quality_station_eo_i_code = if_else(
+        is.na(air_quality_station_eo_i_code) & !is.na(air_quality_station), 
+        air_quality_station, air_quality_station_eo_i_code
+      ),
+      air_quality_station_eo_i_code = stringr::str_remove(
+        air_quality_station_eo_i_code, "^Station_"
+      ),
       site = stringr::str_to_lower(air_quality_station_eo_i_code),
       site = stringr::str_remove(site, "^sta-"),
       variable = stringr::str_to_lower(air_pollutant),
