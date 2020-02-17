@@ -3,6 +3,8 @@
 #' 
 #' @param df Tibble from \code{\link{aqer_read_csv}}.
 #' 
+#' @param drop_sites Should bad sites be removed from the table? 
+#' 
 #' @author Stuart K. Grange
 #' 
 #' @return Tibble. 
@@ -24,7 +26,7 @@
 #'   aqer_data_clean()
 #' 
 #' @export
-aqer_data_clean <- function(df) {
+aqer_data_clean <- function(df, drop_sites = FALSE) {
   
   # Correct names if needed
   if (names(df)[1] == "Countrycode") names(df) <- str_to_underscore(names(df))
@@ -83,6 +85,11 @@ aqer_data_clean <- function(df) {
   # Clean the observations
   df <- aqer_data_table_formatter(df)
   
+  # Drop bad sites
+  if (drop_sites) {
+    df <- filter(df, !stringr::str_detect(site, "^0|^1"))
+  }
+  
   return(df)
   
 }
@@ -101,7 +108,8 @@ aqer_data_table_formatter <- function(df) {
         air_quality_station_eo_i_code, "^Station_"
       ),
       site = stringr::str_to_lower(air_quality_station_eo_i_code),
-      site = stringr::str_remove(site, "^sta-"),
+      site = stringr::str_remove_all(site, "^sta-|^sta\\.|^sta_"),
+      site = stringr::str_remove_all(site, "^de_|^ie\\.|^gib_station_|^hr_doc_type_d_sta_"),
       variable = stringr::str_to_lower(air_pollutant),
       variable = stringr::str_replace_all(variable, " ", "_"), 
       variable = if_else(variable == "nox_as_no2", "nox", variable),

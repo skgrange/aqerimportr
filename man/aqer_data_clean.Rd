@@ -5,10 +5,12 @@
 \title{Function to format Air Quality e-Reporting (AQER) observational data for easy
 use in the \strong{smonitor} framework.}
 \usage{
-aqer_data_clean(df)
+aqer_data_clean(df, drop_sites = FALSE)
 }
 \arguments{
 \item{df}{Tibble from \code{\link{aqer_read_csv}}.}
+
+\item{drop_sites}{Should bad sites be removed from the table?}
 }
 \value{
 Tibble.
