@@ -110,6 +110,11 @@ aqer_data_table_formatter <- function(df) {
       site = stringr::str_to_lower(air_quality_station_eo_i_code),
       site = stringr::str_remove_all(site, "^sta-|^sta\\.|^sta_"),
       site = stringr::str_remove_all(site, "^de_|^ie\\.|^gib_station_|^hr_doc_type_d_sta_"),
+      # Swedish sites wrong
+      site = if_else(
+        stringr::str_detect(site, "^e") & countrycode == "SE", 
+        stringr::str_replace(site, "^e", "se"), site
+      ),
       variable = stringr::str_to_lower(air_pollutant),
       variable = stringr::str_replace_all(variable, " ", "_"), 
       variable = if_else(variable == "nox_as_no2", "nox", variable),
