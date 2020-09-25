@@ -33,9 +33,7 @@ aqer_data_clean <- function(df, drop_sites = FALSE) {
   
   # Check for malformed observations
   # Variables to test
-  variable_names <- c(
-    "countrycode", "air_pollutant_code", "unit_of_measurement", "datetime_begin"
-  )
+  variable_names <- c("countrycode", "air_pollutant_code", "datetime_begin")
   
   # Catch nas and push to characters
   df <- dplyr::mutate_at(df, variable_names, stringr::str_replace_na, "")
@@ -47,16 +45,13 @@ aqer_data_clean <- function(df, drop_sites = FALSE) {
     as.matrix() %>% 
     any()
   
+  # Drop observations
   if (missing_values) {
-    
-    # Drop observations
     df <- df %>% 
       filter(countrycode != "", 
              air_quality_station_eo_i_code != "",
              air_pollutant_code != "",
-             unit_of_measurement != "",
              datetime_begin != "")
-    
   }
   
   # Also check for incorrect air_pollutant_code/observed properties, causes
