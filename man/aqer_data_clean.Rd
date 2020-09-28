@@ -28,7 +28,7 @@ data_aqer <- aqer_read_csv(url)
 # Clean data
 data_aqer_clean <- aqer_data_clean(data_aqer)
 
-# Another example, this files has missing units and will raise a warning
+# Another example, this files has missing units
 url <- "https://ereporting.blob.core.windows.net/downloadservice/AT_618_1437_2013_timeseries.csv"
 data_aqer_clean_test <- aqer_read_csv(url) \%>\% 
   aqer_data_clean()

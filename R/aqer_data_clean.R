@@ -20,7 +20,7 @@
 #' # Clean data
 #' data_aqer_clean <- aqer_data_clean(data_aqer)
 #' 
-#' # Another example, this files has missing units and will raise a warning
+#' # Another example, this files has missing units
 #' url <- "https://ereporting.blob.core.windows.net/downloadservice/AT_618_1437_2013_timeseries.csv"
 #' data_aqer_clean_test <- aqer_read_csv(url) %>% 
 #'   aqer_data_clean()
@@ -57,7 +57,7 @@ aqer_data_clean <- function(df, drop_sites = FALSE) {
   # Also check for incorrect air_pollutant_code/observed properties, causes
   # a lot of issues if incorrect
   df <- df %>% 
-    mutate(observed_property = fs::path_file(air_pollutant_code),
+    mutate(observed_property = basename(air_pollutant_code),
            observed_property = suppressWarnings(as.integer(observed_property)))
   
   # Check for missing-ness
@@ -109,6 +109,11 @@ aqer_data_table_formatter <- function(df) {
       site = if_else(
         stringr::str_detect(site, "^e") & countrycode == "SE", 
         stringr::str_replace(site, "^e", "se"), site
+      ),
+      # For wrong Turkey's sites
+      site = if_else(
+        stringr::str_detect(site, "^4") & countrycode == "TR",
+        stringr::str_c("tr", site), site
       ),
       variable = stringr::str_to_lower(air_pollutant),
       variable = stringr::str_replace_all(variable, " ", "_"), 
