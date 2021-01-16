@@ -62,9 +62,15 @@ aqer_file_list <- function(country = "", pollutant = "", start = 2013, end = NA,
   # Message
   if (verbose) message(date_message(), "`", query_string, "`...")
   
-  # Get file list
-  file_list <- purrr::map(query_string, readLines, warn = FALSE) %>% 
-    purrr::flatten_chr()
+  # Get remote file list
+  list_file_list <- tryCatch({
+    purrr::map(query_string, readr::read_lines) 
+  }, error = function(e) {
+    list()
+  })
+  
+  # Flatten the list
+  file_list <- purrr::flatten_chr(list_file_list)
   
   return(file_list)
   
