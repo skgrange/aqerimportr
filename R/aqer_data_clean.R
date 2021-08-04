@@ -148,7 +148,8 @@ aqer_data_table_formatter <- function(df) {
            date_end, 
            validity,
            verification, 
-           value) %>% 
+           value,
+           dplyr::matches("file")) %>% 
     dplyr::mutate_if(is.character, ~if_else(. == "", NA_character_, .))
   
 }
